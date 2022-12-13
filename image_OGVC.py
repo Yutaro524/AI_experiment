@@ -5,6 +5,7 @@ import numpy as np
 import glob
 import os
 import re
+from augmentation import calculate_melsp, add_white_noise, shift_sound, stretch_sound
 
 paths = glob.glob("OGVC/Acted/wav/*/*/*.wav")
 count = 0
@@ -33,22 +34,63 @@ for path in paths:
         os.makedirs(dir_name)
 
     img_filename = dir_name + "/" + file_id + ".png"
+    img_filename1 = dir_name + "/" + file_id + "white.png"
+    img_filename2 = dir_name + "/" + file_id + "shift.png"
+    img_filename3 = dir_name + "/" + file_id + "stretch.png"
 
     y, sr = librosa.load(path) # y.shape:(117601,) sr:22050 
 
-    S = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=2048, win_length=512, hop_length=512)
+    y1 = add_white_noise(y)
+
+    y2 = shift_sound(y)
+
+    y3 = stretch_sound(y)
 
     ## dB単位に変換
-    S_dB = librosa.power_to_db(S, ref=np.max)
+    S_dB = calculate_melsp(y)
     ## プロット
     img = librosa.display.specshow(S_dB, sr=sr)
-
 
     plt.subplots_adjust(left=0, right=1, bottom=0, top=1)
 
     plt.savefig(img_filename)
 
     plt.cla()
+
+    ## dB単位に変換
+    S_dB = calculate_melsp(y1)
+    ## プロット
+    img = librosa.display.specshow(S_dB, sr=sr)
+
+    plt.subplots_adjust(left=0, right=1, bottom=0, top=1)
+
+    plt.savefig(img_filename1)
+
+    plt.cla()
+
+    ## dB単位に変換
+    S_dB = calculate_melsp(y2)
+    ## プロット
+    img = librosa.display.specshow(S_dB, sr=sr)
+
+    plt.subplots_adjust(left=0, right=1, bottom=0, top=1)
+
+    plt.savefig(img_filename2)
+
+    plt.cla()
+
+    ## dB単位に変換
+    S_dB = calculate_melsp(y3)
+    ## プロット
+    img = librosa.display.specshow(S_dB, sr=sr)
+
+    plt.subplots_adjust(left=0, right=1, bottom=0, top=1)
+
+    plt.savefig(img_filename3)
+
+    plt.cla()
+
+
     print(filename, str(count) + "images are generated")
     count += 1
 
