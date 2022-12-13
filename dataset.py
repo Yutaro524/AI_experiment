@@ -43,7 +43,7 @@ class OGVCDataset(Dataset):
 		}
 		# TODO 画像パスとそのラベルのセットをself.all_dataに入れる
 		self.all_data = []
-		for cls in classes:
+		for cls in classes.keys():
 			filename = self.root + "/*/*/" + cls + "/*.png"
 			cls_label = classes[cls]
 			img_path_list = glob.glob(filename)

@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
-from network import esc50CNN
+from network import OGVCCNN
 from dataset import OGVCDataset
 
 
@@ -36,7 +36,7 @@ def main():
 	print('')
 
 	# Set up a neural network to train
-	net = OGVCDataset(8)
+	net = OGVCCNN(8)
 	# Load designated network weight
 	if args.resume:
 		net.load_state_dict(torch.load(args.resume))
